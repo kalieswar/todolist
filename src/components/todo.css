@@ -1,8 +1,36 @@
-.todo__list{
+.todo__list-pending{
     display: flex;
     justify-content: center;
     align-items: center;
     width: 800px;
-    border: 1px solid lightgray;
+    height:125px;
+    border: 1px solid rgb(255, 0, 0);
+    border-radius: 8px;
     margin-bottom: 10px !important;
+    margin-top: 10px !important;
+    padding-right: 20px !important;
+    background-color: rgb(255, 194, 194);
+}
+
+.todo__list-finished{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 800px;
+    border: 1px solid rgb(0, 255, 47);
+    border-radius: 8px;
+    margin-bottom: 10px !important;
+    margin-top: 10px !important;
+    padding-right: 20px !important;
+    background-color: rgb(212, 250, 154);
+}
+.red{
+    color: red !important;
+}
+.green{
+    color: green !important;
+}
+.modal-content{
+    background-color: rgb(255, 249, 189) !important;
+    border: 5px solid rgb(0, 254, 9) !important;
 }

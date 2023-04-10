@@ -3,12 +3,14 @@ import './App.css';
 import { useEffect, useState } from 'react';
 import Todo from './components/Todo';
 import { myStore } from './firebase/Config';
-import { collection, onSnapshot, serverTimestamp, addDoc, orderBy, query } from 'firebase/firestore';
+import { collection, onSnapshot, addDoc, orderBy, query } from 'firebase/firestore';
 
 const q = query(collection(myStore, 'todos'), orderBy('timestamp', 'desc'))
 function App() {
   const [todos, setTodos] = useState([])
   const [input, setInput] = useState('');
+  const [date, setDate] = useState();
+  const [timeStatus, setTimeStatus] = useState();
   useEffect(() => {
     onSnapshot(q, (snapshot) => {
       setTodos(snapshot.docs.map(doc => ({
@@ -16,15 +18,22 @@ function App() {
         item: doc.data()
       })))
     })
-  }, [input])
-  
+    let getDate = new Date();
+    let getMonth = getDate.getMonth() + 1;
+    let currentDate = getDate.getDate() + '/' + getMonth + '/' + getDate.getFullYear() + ',' + getDate.getHours() + ':' + getDate.getMinutes()
+    setDate(currentDate)
+  }, [input,timeStatus])
+
+
   const addTodo = (e) => {
     e.preventDefault();
     if (input.length > 0) {
 
       addDoc(collection(myStore, "todos"), {
         todo: input,
-        timestamp: serverTimestamp()
+        timestamp: date,
+        status:'Pending',
+        finish:''
       })
       setInput("")
     }
@@ -32,11 +41,11 @@ function App() {
   return (
     <div className="App">
       <h2>To Do List</h2>
-      <form>
+      <form onSubmit={addTodo}>
         <TextField id='outlined-basic' label="Make Todo" variant='outlined' style={{ margin: "0px 5px" }} size='small' value={input}
           onChange={e => setInput(e.target.value)}
         />
-        <Button variant='contained' color='primary' onClick={addTodo}>Add Todo</Button>
+        <Button type='submit' variant='contained' color='primary'>Add Todo</Button>
       </form>
       <ul>
         {todos.map(item => <Todo key={item.id} arr={item} />)}
